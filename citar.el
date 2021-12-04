@@ -108,7 +108,7 @@ for inserting formatted references."
 (defcustom citar-note-skeleton
   '(nil
     (when (derived-mode-p 'org-mode) (citar-org-note-setup))
-    (if (derived-mode-p 'org-mode) "#+TITLE: " "# ")
+    (if (derived-mode-p 'org-mode) "#+title: " "# ")
     "Notes on "
     (if &title (format "\"%s\"" (citar-clean-string &title)) (concat "@" &=key=))
     "\n\n" _
@@ -214,7 +214,9 @@ The function should take one argument, the buffer to display."
                  (function-item pop-to-buffer-same-window)
                  (function :tag "Buffer display function")))
 
-(defcustom citar-note-setup-functions '(citar-skeleton-insert)
+(defcustom citar-note-setup-functions
+  '(citar-skeleton-insert
+    (lambda (&rest _) (when (boundp 'evil-state) (evil-insert 1))))
   "Functions called when new note is created.
 
 The functions in this list are called in the buffer visiting a
